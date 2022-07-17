@@ -10,7 +10,7 @@
 
 ```js
 console.log("Вычисляем: " + result);
-return "Вычисляем: " + result);
+return ("Вычисляем: " + result);
 ```
 
 <details> 
