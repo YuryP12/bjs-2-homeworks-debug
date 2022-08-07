@@ -24,16 +24,19 @@ function cachingDecoratorNew(func) {
   return wrapper;
 }
 
-const debounceDecoratorNew = (func, ms) => {
+function debounceDecoratorNew(func, ms) {
+  let flag = false;
   let timerId;
 
   return function (...args) {
+    if (flag) return;
     clearTimeout(timerId);
 
-    timerId = setTimeout(() => {
-    func.apply(this, args)
-  }, ms);
-};
+    func(...args);
+    flag = true;
+    
+    timerId = setTimeout(() => flag = false, ms);
+  }
 }
 
 function debounceDecorator2(func, ms) {
@@ -41,14 +44,13 @@ function debounceDecorator2(func, ms) {
   let timerId;
 
   const wrapper = (...args) => {
+    if (flag) return;
     clearTimeout(timerId);
 
-    if (!flag) {
-      func(...args);
-      wrapper.count++;
-      flag = true;
-    }
-
+    func(...args);
+    wrapper.count++;
+    flag = true;
+    
     timerId = setTimeout(() => flag = false, ms);
   }
 
